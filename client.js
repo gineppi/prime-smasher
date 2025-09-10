@@ -148,14 +148,15 @@ let title = {
         ctx.font = "40px meiryo";
         ctx.fillText("ランキング",50,200);
         ctx.font = "20px meiryo_l";
-        if(typeof this.ranking === "string"){
+        if(this.ranking === null){
             ctx.fillText("取得中",50,260);
-        }
-        for(var i=0;i < this.ranking.length && i < 5;i++){
-            ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,50,260 + i * 40);
-        }
-        for(var i=5;i < this.ranking.length;i++){
-            ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,350,260 + (i - 5) * 40);
+        }else{
+            for(var i=0;i < this.ranking.length && i < 5;i++){
+                ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,50,260 + i * 40);
+            }
+            for(var i=5;i < this.ranking.length;i++){
+                ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,350,260 + (i - 5) * 40);
+            }
         }
 
 
@@ -180,7 +181,7 @@ let title = {
             }
         }
     },
-    ranking:"",
+    ranking:null,
     message:""
 }
 
