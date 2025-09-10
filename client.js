@@ -9,6 +9,8 @@ let press_key;
 let deltaTime;
 let timeOrigin;
 
+let userName;
+
 let nNumbers = [2,3,5,7,11,13,17];
 
 let soloGameOver = {
@@ -16,6 +18,7 @@ let soloGameOver = {
     setup:function(score){
         sceneManager = 2;
         this.record = score; 
+        sendScore(userName,this.record);
     },
     draw:function(){
         ctx.fillStyle = "#fff";
@@ -23,7 +26,8 @@ let soloGameOver = {
         ctx.textBaseline = "middle";
         ctx.font = "200px meiryo";
         ctx.fillText(String(this.record),canvas.width / 2,canvas.height / 2,canvas.width - 100);
-
+        ctx.font = "40px meiryo";
+        ctx.fillText("Enterキーで戻る",canvas.width / 2,600);
     },
     update:function(){
         if(press_key == "Enter"){
@@ -44,7 +48,6 @@ let soloGame = {
     input:"",
     combo:0,
     setup:function(){
-        console.log(toString(this.question));
         sceneManager = 1;
         this.time = 800;
         this.score = 0;
@@ -129,6 +132,10 @@ let soloGame = {
 let title = {
     setup:function(){
         sceneManager = 0;
+        loadRanking().then(ranking => {
+            this.ranking = ranking;
+            console.log(this.ranking);
+        });
     },
     draw:function(){
 
@@ -138,17 +145,40 @@ let title = {
         ctx.textBaseline = "top";
         ctx.fillText("素因数分解",50,50);
 
+        ctx.font = "40px meiryo";
+        ctx.fillText("ランキング",50,200);
+        ctx.font = "20px meiryo_l";
+        for(var i=0;i < this.ranking.length && i < 5;i++){
+            ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,50,260 + i * 40);
+        }
+        for(var i=5;i < this.ranking.length;i++){
+            ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,350,260 + (i - 5) * 40);
+        }
 
-        ctx.font = "30px meiryo_l";
-        ctx.fillText("一人でプレイ",50,400);
+
+        ctx.textAlign = "center";
+        ctx.font = "40px meiryo_l";
+        ctx.fillText("sキーでスタート",canvas.width / 2,600);
+        ctx.font = "20px meiryo_l";
+        ctx.fillStyle = "#ffff00";
+        ctx.fillText(this.message,canvas.width / 2,530);
 
     },
     update:function(){
-        if(press_key == "w"){
-           soloGame.setup();    
+        userName = document.getElementById("name").value;
+
+        if(press_key == "s" || press_key == "S"){
+            console.log(userName);
+            if(userName.length > 0){
+                this.message = "";
+                soloGame.setup();    
+            }else{
+                this.message = "ユーザー名を入力してね";
+            }
         }
     },
-    select:0
+    ranking:"",
+    message:""
 }
 
 function key_down(e){
@@ -166,6 +196,7 @@ function init(){
         const font = new FontFace("meiryo","url(fonts/meiryob.ttc)");
         font.load().then(loadedFont => {
             document.fonts.add(loadedFont);
+            title.setup();
             main();
         });
     })
@@ -202,6 +233,22 @@ function update(){
             break;
     }
     press_key = null;
+}
+
+async function sendScore(player,score){
+    const res = await fetch("https://score-server-mw2b.onrender.com/score", {
+        method:"POST",
+        headers:{"Content-Type": "application/json"},
+        body: JSON.stringify({player, score})
+    });
+    return res.json();
+}
+
+async function loadRanking(){
+    const res = await fetch("https://score-server-mw2b.onrender.com/ranking");
+    const ranking = await res.json();
+    console.log(ranking);
+    return ranking;
 }
 
 function main(){
