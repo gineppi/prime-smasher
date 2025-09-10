@@ -162,7 +162,7 @@ let title = {
 
         ctx.textAlign = "center";
         ctx.font = "40px meiryo_l";
-        ctx.fillText("sキーでスタート",canvas.width / 2,600);
+        ctx.fillText("Enterキーでスタート",canvas.width / 2,600);
         ctx.font = "20px meiryo_l";
         ctx.fillStyle = "#ffff00";
         ctx.fillText(this.message,canvas.width / 2,530);
@@ -171,7 +171,7 @@ let title = {
     update:function(){
         userName = document.getElementById("name").value;
 
-        if(press_key == "s" || press_key == "S"){
+        if(press_key == "Enter"){
             console.log(userName);
             if(userName.length > 0){
                 this.message = "";
