@@ -132,6 +132,7 @@ let soloGame = {
 let title = {
     setup:function(){
         sceneManager = 0;
+        this.ranking = null;
         loadRanking().then(ranking => {
             this.ranking = ranking;
             console.log(this.ranking);
