@@ -149,6 +149,7 @@ let title = {
         ctx.fillText("ランキング",50,200);
         ctx.font = "20px meiryo_l";
         if(this.ranking === null){
+            console.log(this.ranking);
             ctx.fillText("取得中",50,260);
         }else{
             for(var i=0;i < this.ranking.length && i < 5;i++){
