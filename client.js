@@ -135,7 +135,6 @@ let title = {
         this.ranking = null;
         loadRanking().then(ranking => {
             this.ranking = ranking;
-            console.log(this.ranking);
         });
     },
     draw:function(){
@@ -149,7 +148,6 @@ let title = {
         ctx.font = "40px meiryo";
         ctx.fillText("ランキング",50,200);
         ctx.font = "20px meiryo_l";
-        console.log(this.ranking);
         if(this.ranking === null){
             ctx.fillText("取得中",50,260);
         }else{
@@ -253,7 +251,6 @@ async function sendScore(player,score){
 async function loadRanking(){
     const res = await fetch("https://score-server-mw2b.onrender.com/ranking");
     const ranking = await res.json();
-    console.log(ranking);
     return ranking;
 }
 
