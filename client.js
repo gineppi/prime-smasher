@@ -148,6 +148,9 @@ let title = {
         ctx.font = "40px meiryo";
         ctx.fillText("ランキング",50,200);
         ctx.font = "20px meiryo_l";
+        if(this.ranking.length == 0){
+            ctx.fillText("取得中",50,260);
+        }
         for(var i=0;i < this.ranking.length && i < 5;i++){
             ctx.fillText(`${i + 1} ${this.ranking[i].player} ${this.ranking[i].score}`,50,260 + i * 40);
         }
